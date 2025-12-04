@@ -1,18 +1,19 @@
-# Use official Python image
 FROM python:3.10-slim
 
-# Set working directory inside container
+# Install system dependencies
+RUN apt-get update && \
+    apt-get install -y git && \
+    apt-get clean
+
 WORKDIR /app
 
-# Copy requirements and install dependencies
+# Copy dependencies
 COPY requirements.txt .
+
+# Install Python packages
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all project files into the container
+# Copy entire project
 COPY . .
 
-# Expose the Flask default port
-EXPOSE 5000
-
-# Run the Flask app
-CMD ["python", "app.py"]
+CMD ["python", "main.py"]
